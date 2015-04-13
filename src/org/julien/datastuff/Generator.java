@@ -1,3 +1,5 @@
+package org.julien.datastuff;
+
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.PrintWriter;
@@ -130,6 +132,11 @@ public class Generator {
 		return sb.toString();
 	}
 
+	/**
+	 * This method builds a randomly-generated CSV file
+	 * @param filename the file to store data in
+	 * @param lines the number of lines to store
+	 */
 	private void save(String filename, int lines) {
 		try {
 			PrintWriter writer = new PrintWriter(filename, "UTF-8");
