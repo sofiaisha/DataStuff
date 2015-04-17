@@ -21,6 +21,7 @@ public class MLSample {
 			System.out.println("Model name: " + m.getName());
 			System.out.println("Model id: " + m.getMLModelId());
 			System.out.println("Model status: " + m.getStatus());
+
 			RealtimeEndpointInfo endpoint = m.getEndpointInfo();
 			System.out.println("Endpoint URL: " + endpoint.getEndpointUrl());
 			System.out.println("Endpoint status: "
@@ -51,7 +52,10 @@ public class MLSample {
 		// Send prediction request
 		PredictResult result;
 		try {
+			long start = System.currentTimeMillis();
 			result = client.predict(request);
+			long end = System.currentTimeMillis();
+			System.out.println((end - start) + " ms");
 		} catch (Exception e) {
 			throw new AmazonClientException("Prediction failed", e);
 		}
