@@ -1,3 +1,5 @@
+package org.julien.datastuff;
+
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.services.machinelearning.AmazonMachineLearningClient;
 import com.amazonaws.services.machinelearning.model.DescribeMLModelsResult;
