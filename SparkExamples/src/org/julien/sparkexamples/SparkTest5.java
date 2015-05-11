@@ -4,6 +4,7 @@ import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
+import org.apache.spark.api.java.function.PairFunction;
 
 import scala.Tuple2;
 
@@ -32,6 +33,16 @@ public class SparkTest5 {
 		// Load input data.
 		JavaRDD<String> inputRDD = sc.textFile("SparkTest5.txt");
 
+		/* Version with no lambda : eeeek!
+		PairFunction<String, String, String> keyFunc = 
+				new PairFunction<String, String, String>() { 
+					public Tuple2<String, String> call(String x) {
+						return new Tuple2<String, String>(x.split(" ")[0], x.split(" ")[1]); 
+					}
+				};
+		JavaPairRDD<String, String> pairs = inputRDD.mapToPair(keyFunc);
+		*/
+		
 		// Split fields to create key/value pair
 		JavaPairRDD<String, String> pairRDD = 
 				inputRDD.mapToPair(
