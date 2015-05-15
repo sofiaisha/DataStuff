@@ -1,8 +1,6 @@
 package org.julien.sparkexamples;
 
 import java.util.Map;
-import java.util.function.Function;
-
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
