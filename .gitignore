@@ -2,3 +2,4 @@
 *.class
 data.txt	
 SparkExamples/result
+/target/

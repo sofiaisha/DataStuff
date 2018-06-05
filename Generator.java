@@ -74,20 +74,23 @@ public class Generator {
 				+ filename);
 	}
 
+	
 	/**
-	 * This method builds the start of the line, i.e. it adds data found in
-	 * files
+	 * This method builds the a log line.
 	 * 
 	 * @param delimiter
 	 *            the field delimiter to use in the output string
-	 * @return a incomplete line of text data
+	 * @return a complete line of text data
 	 */
-	private StringBuffer startLine(String delimiter) {
+	private String buildLine(String delimiter) {
 		StringBuffer sb = new StringBuffer();
+		float multiplier = 1f;
+		
 		// Add last name
 		sb.append(getLastNames().get(rand.nextInt(getLastNames().size())));
 		sb.append(delimiter);
-		// Add gender and first name
+		
+		// Add first name and gender
 		int gender = rand.nextInt(2);
 		if (gender == 0) {
 			// Ladies first ;)
@@ -99,35 +102,61 @@ public class Generator {
 					rand.nextInt(getFirstNamesMale().size())));
 			sb.append(delimiter).append("M").append(delimiter);
 		}
+		
+		if (gender == 0) {
+			multiplier *= 1.25f;
+		}
+				
 		// Add state
-		sb.append(getStates().get(rand.nextInt(getStates().size())));
+		String state = getStates().get(rand.nextInt(getStates().size()));
+		sb.append(state);
 		sb.append(delimiter);
-		return sb;
-	}
-
-	/**
-	 * This method builds the rest of the line, i.e. it adds data not found in
-	 * files
-	 * 
-	 * @param delimiter
-	 *            the field delimiter to use in the output string
-	 * @return a complete line of text data
-	 */
-	private String buildLine(String delimiter) {
-		StringBuffer sb = startLine(delimiter);
+		
+		switch (state) {
+		case "California":
+		case "Florida":
+			multiplier *= 1.50f;
+			break;
+		case "New York":
+			multiplier *= 1.75f;
+			break;
+		case "District of Columbia":
+			multiplier *= 2f;
+			break;
+		}
+		
 		// Add age
-		sb.append(18 + rand.nextInt(70)).append(delimiter);
-		// Add month and day of year
-		sb.append(1 + rand.nextInt(12)).append(delimiter);
-		sb.append(1 + rand.nextInt(365)).append(delimiter);
+		int age = 18 + rand.nextInt(70);
+		sb.append(age).append(delimiter);
+		
+		if ((age > 25) && (age < 45)) {
+			multiplier *= 1.2f;
+		}
+		
+		// Add day of year
+		int day = rand.nextInt(365);
+		sb.append(1 + day).append(delimiter);
+		
+		if ( (day > 305) && (day <=335)) {
+			multiplier *= 1.5f;
+		}
+		else if ( (day > 335) && (day <=350)) {
+			multiplier *= 2f;
+		} else if (day > 350) {
+			multiplier *= 2.5f;
+		}
+		
 		// Add hour and minutes
 		sb.append(1 + rand.nextInt(24)).append(delimiter);
 		sb.append(1 + rand.nextInt(60)).append(delimiter);
+		
 		// Add number of items purchased
 		int items = 1 + rand.nextInt(10);
 		sb.append(items).append(delimiter);
+		
 		// Add basket price
-		sb.append(items * rand.nextInt(100));
+				
+		sb.append(Math.abs((int)(rand.nextGaussian()*50+(100*multiplier))));
 		sb.append("\n");
 		return sb.toString();
 	}
@@ -159,7 +188,7 @@ public class Generator {
 		g.load(g.getFirstNamesFemale(), "dist.female.first", " ");
 		g.load(g.getStates(), "US_States.txt", ",");
 
-		g.save("data.txt", 100000);
+		g.save("data-batch-predicton.txt", 1000);
 		System.out.println("Done.");
 	}
 }
